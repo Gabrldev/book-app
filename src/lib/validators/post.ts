@@ -1,8 +1,11 @@
 import { z } from "zod";
 
 export const PostValidator = z.object({
-  text: z.string().min(10).max(255),
+  text: z
+    .string()
+    .min(3, { message: "Title must be at least 3 characters long" })
+    .max(128, { message: "Title must be at most 128 characters long" }),
   imageUrl: z.string().optional(),
 });
 
-export type PostValidatorType = z.infer<typeof PostValidator>;
+export type PostRequest = z.infer<typeof PostValidator>;

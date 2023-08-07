@@ -1,10 +1,11 @@
-import CreatePost from "@/components/CreatePost";
+import FeedPost from "@/components/FeedPost";
 import Container from "@/components/ui/container";
 
 export default async function Home() {
   return (
-    <Container className="mt-14">
-      <CreatePost  />
+    <Container>
+      {/* Feed */}
+      <FeedPost />
     </Container>
   );
 }

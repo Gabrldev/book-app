@@ -5,13 +5,13 @@ import { Button } from "./ui/button";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "./ui/form";
 import { Textarea } from "./ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { PostValidator } from "@/lib/validators/post";
+import { PostRequest, PostValidator } from "@/lib/validators/post";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
 
+interface CreatePostProps {}
 
-interface CreatePostProps {
-}
-
-const CreatePost:React.FC<CreatePostProps> = () => {
+const CreatePost: React.FC<CreatePostProps> = () => {
   const form = useForm({
     resolver: zodResolver(PostValidator),
     defaultValues: {
@@ -24,17 +24,31 @@ const CreatePost:React.FC<CreatePostProps> = () => {
 
   const { imageUrl, text } = getValues();
 
-  const loading = false;
+  const { isLoading, mutate: onSubmit } = useMutation({
+    mutationFn: async ({ text, imageUrl }: PostRequest) => {
+      const payload = {
+        text,
+        imageUrl,
+      };
 
-  const isLoadingCreate = loading;
+      const { data } = await axios.post("/api/post", payload);
 
-  const onSubmit = async (data: any) => {
-    console.log(data);
-  };
+      return data;
+    },
+    onError: (error) => {},
+    onSuccess: () => {
+      form.reset();
+    },
+  });
+
   return (
     <div className="max-w-md mx-auto">
       <Form {...form}>
-        <form onSubmit={handleSubmit((data) => onSubmit(data))}>
+        <form
+          onSubmit={handleSubmit(({ imageUrl, text }) =>
+            onSubmit({ text, imageUrl })
+          )}
+        >
           <FormField
             control={control}
             name="text"
@@ -44,7 +58,7 @@ const CreatePost:React.FC<CreatePostProps> = () => {
                   <Textarea
                     {...field}
                     placeholder="Ingresa tu contenido"
-                    disabled={isLoadingCreate}
+                    disabled={false}
                   />
                 </FormControl>
                 <FormMessage />
@@ -60,7 +74,7 @@ const CreatePost:React.FC<CreatePostProps> = () => {
                   <FormControl>
                     <ImageUpload
                       value={field.value ? [field.value] : []}
-                      disabled={isLoadingCreate}
+                      disabled={false}
                       onChange={(url) => field.onChange(url)}
                       onRemove={() => field.onChange("")}
                     />
@@ -73,6 +87,7 @@ const CreatePost:React.FC<CreatePostProps> = () => {
               className="ml-auto"
               type="submit"
               disabled={text === "" && imageUrl === ""}
+              isLoading={isLoading}
             >
               Create
             </Button>
