@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { buttonVariants } from "./ui/button";
+import { Button, buttonVariants } from "./ui/button";
 import { getAuthSession } from "@/lib/auth";
 import DropMenu from "./DropMenu";
 

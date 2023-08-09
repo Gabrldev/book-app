@@ -11,7 +11,7 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { LogOut, Settings, User as UserIcon } from "lucide-react";
+import {  ChevronsDown, Lightbulb, LightbulbIcon, LogOut, MoreVertical, Pencil, User as UserIcon } from "lucide-react";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
@@ -28,10 +28,14 @@ const DropMenu: React.FC<AvatarProps> = ({ user }) => {
   const handleSettings = () => {
     router.push("/settings");
   };
+
+  const handleCreate = () => {
+    router.push('/post')
+  }
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <div className="cursor-pointer">
+        <div className="cursor-pointer flex items-center">
           <Image
             src={user.image || ""}
             alt="Avatar"
@@ -39,12 +43,20 @@ const DropMenu: React.FC<AvatarProps> = ({ user }) => {
             height={40}
             className="rounded-full"
           />
+          <MoreVertical className="text-muted-foreground w-8 h-8" />
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuLabel>{user.name}</DropdownMenuLabel>
         <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <DropdownMenuItem onClick={handleCreate}>
+          <LightbulbIcon className='mr-2 h-4 w-5' />
+            <span>Create</span>
+            <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
         <DropdownMenuGroup>
           <DropdownMenuItem onClick={handleSettings}>
             <UserIcon className="mr-2 h-4 w-4" />

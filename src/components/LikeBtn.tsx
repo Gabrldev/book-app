@@ -1,20 +1,54 @@
-import { Heart } from "lucide-react";
-import { useState } from "react";
+import { cn } from "@/lib/utils";
+import { Session, User, likes } from "@prisma/client";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+
+import { Pencil } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface LikeBtnProps {
-  likes: number;
+  likes: likes[];
+  postId: string;
+  session: Session & { user: User };
 }
 
-const LikeBtn: React.FC<LikeBtnProps> = ({ likes }) => {
-  const [liked, setLiked] = useState(false);
+const LikeBtn: React.FC<LikeBtnProps> = ({ likes, postId,session }) => {
+
+  
+  const router = useRouter();
+  const { mutate: like } = useMutation({
+
+    
+    mutationFn: async () => {
+
+      const payload = {
+        postId,
+      }
+
+      const isLiked = likes.find((like) => like.authorId === session?.user.id);
+      if (isLiked) {
+        await axios.delete(`/api/like`,);
+        return;
+      }
+      await axios.post(`/api/like`, payload);
+    },
+
+    onSuccess: () => {
+      router.refresh();
+    }
+  });
+ 
+
+  
+
+  const coutLikes = likes.length;
   return (
     <div className="flex items-center gap-2">
-      <Heart
-        className="h-6 w-6 cursor-pointer"
-        onClick={() => setLiked(!liked)}
-      />
+      <Pencil className={cn("h-6 w-6 cursor-pointer",
+        likes.find((like) => like.authorId === session?.user.id) && "text-blue-500"
+      )} onClick={() => like()} />
       <span className="text-xs text-muted-foreground font-semibold">
-      {liked ? likes + 1 : likes}
+        {coutLikes}
       </span>
     </div>
   );

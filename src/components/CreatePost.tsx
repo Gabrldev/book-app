@@ -8,10 +8,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { PostRequest, PostValidator } from "@/lib/validators/post";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 interface CreatePostProps {}
 
 const CreatePost: React.FC<CreatePostProps> = () => {
+  const router = useRouter()
+
   const form = useForm({
     resolver: zodResolver(PostValidator),
     defaultValues: {
@@ -35,9 +38,11 @@ const CreatePost: React.FC<CreatePostProps> = () => {
 
       return data;
     },
-    onError: (error) => {},
+    onError: (error) => {
+    },
     onSuccess: () => {
       form.reset();
+      router.push('/')
     },
   });
 
