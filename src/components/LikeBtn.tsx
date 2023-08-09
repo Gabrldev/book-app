@@ -27,7 +27,7 @@ const LikeBtn: React.FC<LikeBtnProps> = ({ likes, postId,session }) => {
 
       const isLiked = likes.find((like) => like.authorId === session?.user.id);
       if (isLiked) {
-        await axios.delete(`/api/like`,);
+        await axios.delete(`/api/like`, { data: payload });
         return;
       }
       await axios.post(`/api/like`, payload);
