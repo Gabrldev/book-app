@@ -12,7 +12,7 @@ interface PostProps {
   author: User;
   totalComment: number;
   likes: likes[];
-  session: Session & { user: User };
+  session: Session & { user: User } | null;
 }
 const Post: React.FC<PostProps> = ({ post, author, totalComment,likes,session }) => {
   const router = useRouter();
@@ -40,7 +40,7 @@ const Post: React.FC<PostProps> = ({ post, author, totalComment,likes,session })
         </CardContent>
 
         <div className="flex gap-4 mt-2 text-muted-foreground">
-          <LikeBtn likes={likes} postId={post.id} session={session} />
+          <LikeBtn likes={likes} postId={post.id} session={session!} />
           <div
             className="flex items-center gap-2 cursor-pointer"
             onClick={() => router.push(`${post.id}`)}
