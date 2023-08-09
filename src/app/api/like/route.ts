@@ -21,7 +21,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json(like);
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: "error" }, { status: 500 });
   }
 }
 
@@ -43,7 +43,7 @@ export async function DELETE(req: Request) {
     });
 
     return NextResponse.json(like);
-  } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error: any) {
+    return NextResponse.json({ error: "error" }, { status: 500 });
   }
 }
