@@ -15,7 +15,6 @@ const FeedPost = async () => {
   });
 
   const session = await getAuthSession();
-  console.log(posts)
   return (
     <div className="mx-auto flex justify-center items-center mt-2 flex-col gap-y-10">
       {posts.map((post) => (
@@ -25,7 +24,7 @@ const FeedPost = async () => {
           author={post.author}
           totalComment={post.comments.length}
           likes={post.likes}
-          session={session}
+          session={session!}
         />
       ))}
     </div>

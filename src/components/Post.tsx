@@ -12,7 +12,7 @@ interface PostProps {
   author: User;
   totalComment: number;
   likes: likes[];
-  session: Session & { user: User } | null;
+  session: any
 }
 const Post: React.FC<PostProps> = ({ post, author, totalComment,likes,session }) => {
   const router = useRouter();
